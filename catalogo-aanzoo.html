@@ -144,18 +144,6 @@ legend{font-weight:800;font-size:1.1rem;margin-bottom:8px}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:.9rem;z-index:60;opacity:0;pointer-events:none;transition:opacity .2s}
 .toast.on{opacity:1}
 footer{color:var(--muted);font-size:.85rem;padding:0 0 120px}
-.demo{background:var(--yellow);color:#14306B;font-size:.82rem;font-weight:600;text-align:center;padding:6px 12px}
-.social{display:flex;gap:8px;align-items:center;margin-top:16px;flex-wrap:wrap}
-.social span{font-size:.85rem;color:var(--muted);font-weight:600;margin-right:2px}
-.soc{width:40px;height:40px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;color:#fff;text-decoration:none}
-.soc svg{width:20px;height:20px}
-.soc.fb{background:#1C3F94}.soc.ig{background:#D7261E}.soc.tt{background:#14306B}
-.follow{background:var(--brand);color:#fff;border-radius:20px;padding:24px 20px;margin:10px 0 24px;display:grid;gap:14px}
-.follow h2{margin:0;font-size:1.5rem;letter-spacing:-.02em}
-.follow p{margin:0;opacity:.88;max-width:48ch}
-.follow .row{display:flex;gap:10px;flex-wrap:wrap}
-.follow a{display:inline-flex;gap:8px;align-items:center;background:#fff;color:#14306B;border-radius:12px;padding:10px 14px;font-weight:700;text-decoration:none}
-.follow a svg{width:18px;height:18px}
 .vpill{display:none;margin-top:14px;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px 12px;width:fit-content;max-width:100%}
 .vpill.on{display:flex}
 .vpill button{border:0;background:transparent;color:var(--blue);font-weight:700;cursor:pointer;padding:4px}
@@ -280,8 +268,6 @@ footer{color:var(--muted);font-size:.85rem;padding:0 0 120px}
    img: data URI da foto (ou null para mostrar o marcador)
    preco: em meticais (ou null = "Preço sob consulta")
    ========================================================= */
-const WHATSAPP = "258842462749";
-
 const CATEGORIAS = [{"id": "arroz-farinha", "nome": "Arroz e farinha"}, {"id": "oleos", "nome": "Óleos"}, {"id": "pequeno-almoco", "nome": "Leite, café e pequeno-almoço"}, {"id": "conservas", "nome": "Enlatados e conservas"}, {"id": "molhos", "nome": "Molhos e temperos"}, {"id": "pastelaria", "nome": "Pastelaria e sobremesas"}, {"id": "massas", "nome": "Massas"}, {"id": "bolachas", "nome": "Bolachas e biscoitos"}, {"id": "pipocas", "nome": "Pipocas e snacks"}, {"id": "chocolates", "nome": "Chocolates"}, {"id": "doces", "nome": "Rebuçados, pastilhas e chupas"}, {"id": "bebidas", "nome": "Bebidas"}, {"id": "cabelo", "nome": "Cosméticos: cabelo"}, {"id": "corpo", "nome": "Cosméticos: pele e corpo"}, {"id": "bebe", "nome": "Bebé"}, {"id": "higiene-oral", "nome": "Higiene oral"}, {"id": "higiene-feminina", "nome": "Higiene feminina"}, {"id": "barbear", "nome": "Lâminas de barbear"}, {"id": "limpeza", "nome": "Sabão e detergentes"}, {"id": "papelaria", "nome": "Papelaria"}, {"id": "casa", "nome": "Casa e utilidades"}, {"id": "animais", "nome": "Ração para animais"}];
 
 /* ref = descrição exacta do sistema de stock (vai na mensagem do WhatsApp)
@@ -1050,7 +1036,6 @@ const store = {
 
 const mt = n => n.toLocaleString("pt-PT",{minimumFractionDigits:2,maximumFractionDigits:2}) + " MT";
 const byId = id => PRODUTOS.find(p => p.id === id);
-const initials = s => { const w=s.replace(/[^A-Za-zÀ-ÿ0-9 &']/g," ").split(" ").filter(Boolean); return (w.length===1 || w[0].length<=4) ? w[0].slice(0,5).toUpperCase() : w.slice(0,2).map(x=>x[0]).join("").toUpperCase(); };
 function tint(s){ let h=0; for(const c of s) h=(h*31+c.charCodeAt(0))>>>0; return TINTS[h%TINTS.length]; }
 function esc(s){ const d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
 function thumb(p){
@@ -1260,8 +1245,6 @@ document.addEventListener("click", e=>{
   const c=e.target.closest("[data-vend]");
   if(c){ vend=c.dataset.vend; store.set("aanzoo_vendedor",vend); $("#verr").classList.remove("on"); renderVend(); renderPill(); renderVendSection(); if(c.classList.contains("pick")) toast(`Vendedor escolhido: ${(vByCod(vend)||{}).alcunha||(vByCod(vend)||{}).nome}`); return; }
   if(e.target.closest("#vchange")){ $("#vendedores").scrollIntoView({behavior:"smooth",block:"start"}); return; }
-  const s=e.target.closest("[data-soc]");
-  if(s && s.getAttribute("href")==="#"){ e.preventDefault(); toast(`Página de ${s.dataset.soc} em breve.`); }
 });
 $("#vq").addEventListener("input", renderVend);
 
